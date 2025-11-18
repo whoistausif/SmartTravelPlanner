@@ -1,142 +1,114 @@
-# Smart Travel Planner — AI Multi-Agent Travel Assistant
-
-A fully-featured **AI Multi-Agent Travel Planner** that generates personalized, budget-optimized travel itineraries using FastAPI, LLM-powered agents, and a modern interactive frontend.
-
-This project demonstrates multi-agent reasoning, tool use, backend–frontend integration, and deployment on a live environment.
+# 📌 INTRODUCTION  
+The Smart Travel Planner is an AI-powered multi-agent system designed to generate structured, personalized, and budget-friendly travel itineraries. It analyzes user preferences such as destination, days, interests, and budget to create an optimized trip plan.
 
 ---
 
-## Problem
+# 📌 PROBLEM STATEMENT  
+Planning a trip is time-consuming and often unorganized. Users face challenges like:
+- Selecting destinations based on interests  
+- Managing budget effectively  
+- Creating day-wise itineraries  
+- Adjusting travel plans dynamically  
 
-Travel planning is complicated and time-consuming. Users must search multiple websites for attractions, routes, weather, budget, and day-wise planning. Traditional LLM prompts often hallucinate or generate unrealistic plans.
-
----
-
-## Why Agents?
-
-Travel planning is a multi-step reasoning task.  
-This system uses **specialized AI agents** that collaborate:
-
-### 1. Research Agent  
-Fetches attractions, weather insights, and local information.
-
-### 2. Budget Agent  
-Calculates cost and checks feasibility.
-
-### 3. Planner Agent  
-Creates the full day-by-day itinerary.
-
-### 4. Review Agent  
-Fixes errors, improves clarity, and finalizes the output.
-
-This produces realistic, structured, accurate itineraries.
+There is a need for a system that automates travel planning while ensuring personalization, clarity, and cost-effectiveness.
 
 ---
 
-## Features
+# 📌 PROPOSED SOLUTION  
+This project introduces a **multi-agent AI system** where each agent performs a specialized task:
 
-### Frontend (static/index.html)
-- Clean soft-minimal UI  
-- Dark/Light theme switch  
-- Animated glow effects  
-- Skeleton loading shimmer  
-- Voice output (Speak / Stop)  
-- Google Maps integration  
-- Save itinerary as **TXT**  
-- Save itinerary as **PNG**
+- **Planner Agent**: Creates initial itinerary  
+- **Validator Agent**: Fixes inconsistencies and ensures budget feasibility  
+- **Formatter Agent**: Produces structured JSON output  
+- **Refiner Agent**: Enhances clarity and readability  
 
-### Backend (FastAPI)
-- Multi-agent pipeline  
-- `/plan-trip` endpoint  
-- Serves index.html  
-- Async processing  
-- Ideal for deployment
-
-### AI
-- Gemini / Groq / OpenAI-ready  
-- Multi-step reasoning  
-- Context-aware travel plans  
+The system is accessed via a FastAPI backend and a clean frontend interface.
 
 ---
 
-## Architecture Overview
-User Input
-│
-▼
-Frontend (index.html)
-│ fetch("/plan-trip")
-▼
-FastAPI Backend (main.py)
-│
-▼
-Multi-Agent Engine
-┌────────────┬────────────┬─────────────┐
-│Research │Budget │ Planner │
-│Agent │Agent │ Agent │
-└────────────┴────────────┴─────────────┘
-│
-▼
-Review Agent
-│
-▼
-Final Itinerary → Shown in UI
+# 📌 ARCHITECTURE  
 
----
-
-## Project Structure
-├── app/
-│ ├── main.py
-│ └── planner_agent.py
-│
-├── static/
-│ └── index.html
-│
-├── venv/
-│
-├── Procfile
-├── requirements.txt
-└── README.md
-
----
-
-## File Details
-
-### app/main.py
-- FastAPI server  
-- `/plan-trip` endpoint  
-- Serves UI  
-- Runs PlannerAgent
-
-### app/planner_agent.py
-- Core multi-agent logic  
-- Calls LLM  
-- Creates final itinerary
-
-### static/index.html
-- UI + JS logic  
-- Light/Dark theme  
-- Speak/Stop  
-- Glow & animation  
-- PNG/TXT export  
-- Maps integration
-
-### Procfile
-web: uvicorn app.main:app --host 0.0.0.0 --port $PORT
-
-### requirements.txt
-List of backend dependencies.
-
----
-
-## Local Setup
-
-### Clone
-```bash
-git clone https://github.com/YOUR_USERNAME/SmartTravelPlanner.git
-cd SmartTravelPlanner
-
+## 🔹 High-Level Flow  
 ```
-Install dependencies
-```bash pip install -r requirements.txt ```
-Run server
-```bash uvicorn app.main:app --reload```
+User → Frontend → FastAPI Backend → Multi-Agent System → Final Itinerary
+```
+
+## 🔹 Multi-Agent Workflow  
+```
+[Input] → Planner Agent → Validator Agent → Formatter Agent → Output
+```
+
+## 🔹 Folder Structure  
+```
+project/
+│── main.py
+│── agents/
+│     ├── planner_agent.py
+│     ├── validator_agent.py
+│     ├── formatter_agent.py
+│── static/
+│── templates/
+│── README.md
+│── requirements.txt
+```
+
+---
+
+# 📌 INSTRUCTION FOR SETUP  
+
+### 🚀 Requirements  
+- Python 3.10+
+- FastAPI
+- Uvicorn
+- OpenAI API / Local LLM
+
+### 📦 Installation  
+```bash
+git clone <your-repo-link>
+cd project
+pip install -r requirements.txt
+```
+
+### ▶️ Run Backend  
+```bash
+uvicorn main:app --reload --port 8000
+```
+
+### 🌐 Run Frontend  
+Open `index.html` in browser  
+(or use Live Server)
+
+---
+
+# 📌 DIAGRAM  
+
+## 🌐 System Architecture Diagram  
+```
++-------------+        +-----------------+        +----------------------+
+|   USER      | -----> | FRONTEND (UI)   | -----> | FASTAPI BACKEND     |
++-------------+        +-----------------+        +----------+-----------+
+                                                           |
+                                                           v
+                                                +----------------------+
+                                                |  MULTI-AGENT SYSTEM  |
+                                                +----------------------+
+                                                | Planner Agent        |
+                                                | Validator Agent      |
+                                                | Formatter Agent      |
+                                                +----------------------+
+                                                           |
+                                                           v
+                                                +----------------------+
+                                                |  FINAL ITINERARY     |
+                                                +----------------------+
+```
+
+## 🔄 Multi-Agent Flow Diagram  
+```
+[User Input]
+      |
+      v
+[Planner Agent] → [Validator Agent] → [Formatter Agent] → [Final JSON Output]
+```
+
+---
