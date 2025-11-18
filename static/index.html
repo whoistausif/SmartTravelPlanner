@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Smart Travel Planner — Soft Minimal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+/* ============================================================
+   THEME VARIABLES
+============================================================ */
+:root {
+  --bg: #0a0f1f;
+  --card: rgba(255,255,255,0.06);
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #4f9efc;
+  --glow: rgba(0,195,255,0.35);
+}
+[data-theme="light"] {
+  --bg: #eef3fa;
+  --card: rgba(0,0,0,0.05);
+  --text: #1b1d21;
+  --muted: #5c6169;
+  --accent: #2563eb;
+  --glow: rgba(37,99,235,0.25);
+}
+
+/* BODY */
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s ease;
+}
+
+/* HEADER */
+header {
+  max-width: 2000px;
+  margin: 30px auto 0;
+  text-align: center;
+}
+h1 {
+  margin: 0;
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 20px var(--glow);
+}
+.sub {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* THEME TOGGLE */
+.theme-toggle {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--accent);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.theme-toggle:hover {
+  box-shadow: 0 0 20px var(--glow);
+}
+.theme-toggle img {
+  width: 22px;
+  transition: 0.6s;
+}
+
+/* LAYOUT GRID */
+.page {
+  max-width: 1180px;
+  margin: 40px auto 80px;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 30px;
+  padding: 20px;
+}
+
+/* CARD WITH GLOW */
+.card {
+  background: var(--card);
+  padding: 28px;
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: 0.3s;
+}
+.card:hover {
+  box-shadow: 0 0 25px var(--glow);
+}
+
+/* LABEL + INPUT */
+label {
+  font-size: 15px;
+  font-weight: 600;
+}
+input {
+  width: 100%;
+  padding: 16px 18px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 14px;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 6px;
+  margin-bottom: 14px;
+  box-sizing: border-box;
+}
+input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 15px var(--glow);
+  outline: none;
+}
+input::placeholder {
+  color: var(--muted);
+}
+
+/* DAYS + BUDGET FIX */
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+.input-box {
+  display: flex;
+  flex-direction: column;
+}
+
+/* AI-STYLE BUTTONS */
+.btn {
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-size: 15.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.25s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #7ebeff);
+  color: #fff;
+  box-shadow: 0 0 25px var(--glow);
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 35px var(--glow);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--text);
+}
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.25);
+  box-shadow: 0 0 20px var(--glow);
+  transform: translateY(-3px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+}
+.btn-outline:hover {
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 0 20px var(--accent);
+}
+
+/* Button spacing */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* OUTPUT */
+#output {
+  background: rgba(0,0,0,0.25);
+  padding: 22px;
+  border-radius: 16px;
+  border-left: 4px solid var(--accent);
+  min-height: 520px;
+  max-height: 650px;
+  overflow-y: auto;
+}
+
+/* SKELETON LOADING */
+.skeleton {
+  height: 14px;
+  background: linear-gradient(90deg,#ffffff09,#ffffff20,#ffffff09);
+  animation: shimmer 1.4s infinite;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+@keyframes shimmer {
+  from { background-position: -200px 0; }
+  to   { background-position: 200px 0; }
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 25px 0;
+  border-top: 1px solid var(--accent);
+}
+/* ================================
+   FIX BUTTON VISIBILITY IN LIGHT MODE
+================================ */
+[data-theme="light"] .btn-secondary {
+  background: rgba(0,0,0,0.08);             /* light gray */
+  border: 1px solid rgba(0,0,0,0.22);       /* dark border */
+  color: #1b1d21;                           /* dark text */
+}
+
+[data-theme="light"] .btn-secondary:hover {
+  background: rgba(0,0,0,0.13);
+  box-shadow: 0 0 20px rgba(37,99,235,0.35);
+}
+
+[data-theme="light"] .btn-outline {
+  background: transparent;
+  border: 2px solid #2563eb;                /* strong blue outline */
+  color: #2563eb;
+}
+
+[data-theme="light"] .btn-outline:hover {
+  background: rgba(37,99,235,0.08);
+  box-shadow: 0 0 20px rgba(37,99,235,0.3);
+}
+
+[data-theme="light"] .btn-primary {
+  box-shadow: 0 0 25px rgba(37,99,235,0.25); /* keep glow in light mode */
+}
+
+
+</style>
+</head>
+
+<body data-theme="dark">
+
+<!-- THEME TOGGLE BUTTON -->
+<div class="theme-toggle" id="themeToggle">
+  <img id="themeIcon" src="https://img.icons8.com/fluency-systems-filled/48/ffffff/sun.png">
+</div>
+
+<header>
+  <h1>Smart Travel Planner — By Mohammad Tausif</h1>
+  <div class="sub">Clean UI • Voice • PNG/TXT • Maps • Light/Dark Mode</div>
+</header>
+
+<main class="page">
+
+  <!-- LEFT PANEL -->
+  <section class="card">
+
+    <label>Destination</label>
+    <input id="destination" placeholder="e.g., Goa, Manali, Dubai">
+
+    <div class="input-row">
+      <div class="input-box">
+        <label>Days</label>
+        <input id="days" type="number" min="1">
+      </div>
+
+      <div class="input-box">
+        <label>Budget (₹)</label>
+        <input id="budget" type="number" min="0">
+      </div>
+    </div>
+
+    <label>Your interests</label>
+    <input id="interests" placeholder="beach, food, adventure">
+
+    <!-- Button Rows -->
+    <div class="button-row">
+      <button class="btn btn-primary" id="generateBtn">✨ Generate Plan</button>
+      <button class="btn btn-secondary" id="speakBtn" style="display:none;">🗣️ Speak</button>
+      <button class="btn btn-secondary" id="stopSpeakBtn" style="display:none;">⏹ Stop</button>
+      <button class="btn btn-outline" id="mapsBtn" style="display:none;">🗺️ Maps</button>
+    </div>
+
+    <div class="button-row">
+      <button class="btn btn-secondary" id="downloadTxt" style="display:none;">📄 Download TXT</button>
+      <button class="btn btn-secondary" id="downloadPng" style="display:none;">🖼️ Download PNG</button>
+    </div>
+
+  </section>
+
+  <!-- RIGHT PANEL -->
+  <section class="card">
+    <div id="output">Your generated plan will appear here.</div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  Smart Travel Planner — Built with ❤️ | Soft Minimal UI <br>
+  © 2025 Mohammad Tausif
+</footer>
+
+<script>
+/* THEME TOGGLE */
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
+
+themeToggle.onclick = () => {
+  let t = document.body.getAttribute("data-theme");
+  if (t === "dark") {
+    document.body.setAttribute("data-theme","light");
+    themeIcon.style.transform = "rotate(180deg)";
+    themeIcon.src = "https://img.icons8.com/fluency-systems-filled/48/moon.png";
+  } else {
+    document.body.setAttribute("data-theme","dark");
+    themeIcon.style.transform = "rotate(360deg)";
+    themeIcon.src = "https://img.icons8.com/fluency-systems-filled/48/sun.png";
+  }
+};
+
+/* CORE JS */
+const API_URL = "http://127.0.0.1:8000/plan-trip";
+
+const destinationEl = document.getElementById("destination");
+const daysEl = document.getElementById("days");
+const budgetEl = document.getElementById("budget");
+const interestsEl = document.getElementById("interests");
+const outputEl = document.getElementById("output");
+
+const generateBtn = document.getElementById("generateBtn");
+const speakBtn = document.getElementById("speakBtn");
+const stopSpeakBtn = document.getElementById("stopSpeakBtn");
+const downloadTxt = document.getElementById("downloadTxt");
+const downloadPng = document.getElementById("downloadPng");
+const mapsBtn = document.getElementById("mapsBtn");
+
+let chosenVoice = null;
+window.speechSynthesis.onvoiceschanged = () => {
+  chosenVoice = window.speechSynthesis.getVoices()[0];
+};
+
+/* STOP SPEECH */
+stopSpeakBtn.onclick = () => window.speechSynthesis.cancel();
+
+/* GENERATE PLAN */
+generateBtn.onclick = async () => {
+  const d = destinationEl.value.trim();
+  if (!d || !daysEl.value || !budgetEl.value) {
+    alert("Please fill all fields.");
+    return;
+  }
+
+  outputEl.innerHTML = `
+    <div class="skeleton" style="width:90%"></div>
+    <div class="skeleton" style="width:80%"></div>
+    <div class="skeleton" style="width:95%"></div>
+    <div class="skeleton" style="width:88%"></div>
+  `;
+
+  const res = await fetch(API_URL, {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({
+      destination: d,
+      days: Number(daysEl.value),
+      budget: Number(budgetEl.value),
+      interests: interestsEl.value.split(",").map(x=>x.trim())
+    })
+  });
+
+  const data = await res.json();
+  const plan = data.plan || "No plan generated.";
+  outputEl.innerHTML = marked.parse(plan);
+
+  speakBtn.style.display = "inline-flex";
+  stopSpeakBtn.style.display = "inline-flex";
+  downloadTxt.style.display = "inline-flex";
+  downloadPng.style.display = "inline-flex";
+  mapsBtn.style.display = "inline-flex";
+
+  speakBtn.dataset.text = plan;
+  downloadTxt.dataset.text = plan;
+
+  mapsBtn.onclick = () =>
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d)}`, "_blank");
+};
+
+/* SPEAK */
+speakBtn.onclick = () => {
+  const u = new SpeechSynthesisUtterance(speakBtn.dataset.text);
+  u.voice = chosenVoice;
+  u.rate = 0.95;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+};
+
+/* TXT DOWNLOAD */
+downloadTxt.onclick = () => {
+  const blob = new Blob([downloadTxt.dataset.text], {type:"text/plain"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "travel-plan.txt";
+  a.click();
+};
+
+/* PNG DOWNLOAD */
+downloadPng.onclick = async () => {
+  const canvas = await html2canvas(outputEl, {scale:2});
+  const a = document.createElement("a");
+  a.href = canvas.toDataURL();
+  a.download = "travel-plan.png";
+  a.click();
+};
+</script>
+
+</body>
+</html>
