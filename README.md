@@ -120,3 +120,22 @@ Open `index.html` in browser
 ```
 
 ---
+## 📸 Output Preview
+
+Below is a sample screenshot of the generated travel itinerary from the Smart Travel Planner:
+
+<p align="center">
+  <img src="Screenshot 2025-11-18 205616.png" width="800" alt="Smart Travel Planner Output Screenshot">
+</p>
+<p align="center">
+  <img src="Screenshot 2025-11-18 205642.png" width="800" alt="Smart Travel Planner Output Screenshot">
+</p>
+---
+
+## 🚀 Live Demo
+
+Try the live application here:
+
+👉 **[Live Link](https://web-production-97b96.up.railway.app/)**
+
+---
