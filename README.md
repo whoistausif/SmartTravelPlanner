@@ -30,6 +30,7 @@ The system is accessed via a FastAPI backend and a clean frontend interface.
 <p align="center">
   <img src="architecture_diagram.png" width="750" alt="Architecture Diagram">
 </p>
+
 ## 🔹 High-Level Flow  
 ```
 User → Frontend → FastAPI Backend → Multi-Agent System → Final Itinerary
