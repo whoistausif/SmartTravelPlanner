@@ -41,15 +41,15 @@ User → Frontend → FastAPI Backend → Multi-Agent System → Final Itinerary
 ## 🔹 Folder Structure  
 ```
 project/
+APP/
 │── main.py
-│── agents/
-│     ├── planner_agent.py
-│     ├── validator_agent.py
-│     ├── formatter_agent.py
-│── static/
-│── templates/
-│── README.md
-│── requirements.txt
+│── planner_agent.py
+│
+STATICS/
+│── index.html
+│
+README.md
+requirements.txt
 ```
 
 ---
@@ -92,9 +92,10 @@ Open `index.html` in browser
                                                 +----------------------+
                                                 |  MULTI-AGENT SYSTEM  |
                                                 +----------------------+
+                                                | Research Agent       |
+                                                | Budget Agent         |
                                                 | Planner Agent        |
-                                                | Validator Agent      |
-                                                | Formatter Agent      |
+                                                | Review Agent         |
                                                 +----------------------+
                                                            |
                                                            v
