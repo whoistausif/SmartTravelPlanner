@@ -378,7 +378,7 @@ generateBtn.onclick = async () => {
     <div class="skeleton" style="width:88%"></div>
   `;
 
-  const res = await fetch(API_URL, {
+  const res = await fetch("https://web-production-97b96.up.railway.app/plan-trip", {
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body: JSON.stringify({
