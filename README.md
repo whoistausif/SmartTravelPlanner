@@ -136,6 +136,6 @@ Below is a sample screenshot of the generated travel itinerary from the Smart Tr
 
 Try the live application here:
 
-👉 **[Live Link](https://web-production-97b96.up.railway.app/)**
+👉 **[Live Link (Currently Unavailable) ](https://web-production-97b96.up.railway.app/)**
 
 ---
